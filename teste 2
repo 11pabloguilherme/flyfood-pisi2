@@ -1,0 +1,39 @@
+# Posição 0 = R, 1 = A, 2 = B, 3 = C, 4 = D
+distancias = [
+    [0, 3, 2, 5, 7],  # R
+    [3, 0, 3, 4, 4],  # A
+    [2, 3, 0, 3, 5],  # B
+    [5, 4, 3, 0, 2],  # C
+    [7, 4, 5, 2, 0]   # D
+]
+def permutacoes(lista):
+    if len(lista) == 0:
+        return [[]]
+    resultado = []
+    for i in range(len(lista)):
+        resto = lista[:i] + lista[i+1:]
+        for p in permutacoes(resto):
+            resultado.append([lista[i]] + p)
+    return resultado
+
+# Índices dos pontos que precisamos visitar, sem contar o ponto de origem (R = índice 0)
+pontos = [1, 2, 3, 4]
+
+m_rota= None
+me_distancia = float('inf')
+
+for ordem in permutacoes(pontos):
+    rota = [0] + ordem + [0]  
+    distancia_total = 0
+    for i in range(len(rota) - 1):
+        distancia_total += distancias[rota[i]][rota[i + 1]]
+    if distancia_total < me_distancia:
+        m_distancia = distancia_total
+        m_rota = rota
+
+
+letras = ['R', 'A', 'B', 'C', 'D']
+melhor_rota_letras = [letras[i] for i in m_rota]
+
+print("Melhor rota:", " → ".join(melhor_rota_letras))
+print("Distância total:", me_distancia)
